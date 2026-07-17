@@ -7,8 +7,9 @@ import com.nish.reflect.data.local.ReflectDatabase
 import com.nish.reflect.data.model.JournalEntry
 import com.nish.reflect.data.model.MoodLog
 import com.nish.reflect.data.remote.ReflectAIService
-import com.nish.reflect.engine.LocalSentimentAnalyzer
 import com.nish.reflect.engine.MoodAggregator
+import com.nish.reflect.engine.MoodAggregator.WeeklyStats
+import com.nish.reflect.engine.LocalSentimentAnalyzer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,8 +49,8 @@ class ReflectViewModel(app: Application) : AndroidViewModel(app) {
     private val _digestHeadline = MutableStateFlow<String?>(null)
     val digestHeadline: StateFlow<String?> = _digestHeadline.asStateFlow()
 
-    private val _weeklyStats = MutableStateFlow<MoodAggregator.WeeklyStats?>(null)
-    val weeklyStats: StateFlow<MoodAggregator.WeeklyStats?> = _weeklyStats.asStateFlow()
+    private val _weeklyStats = MutableStateFlow<WeeklyStats?>(null)
+    val weeklyStats: StateFlow<WeeklyStats?> = _weeklyStats.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()

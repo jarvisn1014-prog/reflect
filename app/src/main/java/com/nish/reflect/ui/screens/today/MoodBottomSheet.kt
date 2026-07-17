@@ -3,13 +3,13 @@ package com.nish.reflect.ui.screens.today
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,12 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nish.reflect.ui.theme.Accent
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun MoodBottomSheet(
     sheetState: androidx.compose.material3.SheetState,
@@ -38,8 +37,9 @@ fun MoodBottomSheet(
     onMoodSelected: (mood: String, valence: Float, energy: Float, tags: String?) -> Unit
 ) {
     var selectedMood by remember { mutableStateOf<String?>(null) }
+    var selectedValence by remember { mutableStateOf(0f) }
     var showTags by remember { mutableStateOf(false) }
-    val selectedTags = remember { mutableStateOf<MutableSet<String>>(mutableSetOf()) }
+    var selectedTags by remember { mutableStateOf(setOf<String>()) }
 
     val moods = listOf("Rough" to -1.0f, "Low" to -0.5f, "Okay" to 0f, "Good" to 0.5f, "Great" to 1.0f)
     val tagOptions = listOf("anxious", "calm", "grateful", "frustrated", "lonely", "motivated", "sad", "content", "overwhelmed", "hopeful", "tired", "joyful")
@@ -71,8 +71,7 @@ fun MoodBottomSheet(
                             .size(56.dp)
                             .clickable {
                                 selectedMood = label
-                                // Implicit save on selection
-                                onMoodSelected(label, valence, 0.5f, null)
+                                selectedValence = valence
                             }
                     ) {
                         Text(
@@ -80,7 +79,7 @@ fun MoodBottomSheet(
                             style = MaterialTheme.typography.labelSmall,
                             color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(8.dp),
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -89,61 +88,62 @@ fun MoodBottomSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Optional tags — progressive disclosure
-            Text(
-                text = if (showTags) "Hide details ▲" else "Add detail ▼",
-                style = MaterialTheme.typography.labelMedium,
-                color = Accent,
-                modifier = Modifier.clickable { showTags = !showTags }
-            )
+            if (selectedMood != null) {
+                Text(
+                    text = if (showTags) "Hide details ▲" else "Add detail ▼",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Accent,
+                    modifier = Modifier.clickable { showTags = !showTags }
+                )
 
-            if (showTags) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    tagOptions.take(6).forEach { tag ->
-                        val isSelected = tag in selectedTags.value
-                        Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = if (isSelected) Accent.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
-                            modifier = Modifier.clickable {
-                                if (isSelected) selectedTags.value.remove(tag)
-                                else selectedTags.value.add(tag)
+                if (showTags) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        tagOptions.forEach { tag ->
+                            val isSelected = tag in selectedTags
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isSelected) Accent.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
+                                modifier = Modifier.clickable {
+                                    selectedTags = if (isSelected) selectedTags - tag else selectedTags + tag
+                                }
+                            ) {
+                                Text(
+                                    text = tag,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                                )
                             }
-                        ) {
-                            Text(
-                                text = tag,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-                            )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    tagOptions.drop(6).forEach { tag ->
-                        val isSelected = tag in selectedTags.value
-                        Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = if (isSelected) Accent.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
-                            modifier = Modifier.clickable {
-                                if (isSelected) selectedTags.value.remove(tag)
-                                else selectedTags.value.add(tag)
-                            }
-                        ) {
-                            Text(
-                                text = tag,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-                            )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Done button — saves mood with tags
+                Surface(
+                    shape = RoundedCornerShape(25.dp),
+                    color = Accent,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(44.dp)
+                        .clickable {
+                            val tags = if (selectedTags.isEmpty()) null else selectedTags.joinToString(",")
+                            onMoodSelected(selectedMood!!, selectedValence, 0.5f, tags)
                         }
-                    }
+                ) {
+                    Text(
+                        text = "Done",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.padding(8.dp),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 

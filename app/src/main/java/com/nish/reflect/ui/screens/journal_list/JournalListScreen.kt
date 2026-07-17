@@ -1,5 +1,7 @@
 package com.nish.reflect.ui.screens.journal_list
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -120,7 +122,7 @@ private fun JournalEntryCard(
     androidx.compose.material3.Card(
         modifier = Modifier
             .fillMaxWidth()
-            .androidx.compose.foundation.clickable(onClick = onClick),
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {

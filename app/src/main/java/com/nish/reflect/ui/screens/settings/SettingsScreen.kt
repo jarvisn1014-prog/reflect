@@ -115,7 +115,7 @@ fun SettingsScreen(
                 Text("Data", style = MaterialTheme.typography.titleMedium)
                 TextButton(onClick = {
                     val export = viewModel.exportJournal()
-                    // In a real app, save to file. For now, just note it's available.
+                    // Export generated — in production this would save to a file via FileProvider
                 }) {
                     Text("Export your journal", color = MaterialTheme.colorScheme.primary)
                 }

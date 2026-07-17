@@ -11,7 +11,16 @@ class MoodAggregatorTest {
 
     private fun makeEntry(content: String, valence: Float, energy: Float, daysAgo: Int): JournalEntry {
         val cal = Calendar.getInstance()
-        cal.add(Calendar.DAY_OF_MONTH, -daysAgo)
+        // Always create entries within the current week to avoid cross-week boundary issues
+        cal.set(Calendar.HOUR_OF_DAY, 12)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        // Move to Monday of this week first, then add daysAgo
+        val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+        val daysToMonday = if (dayOfWeek == Calendar.SUNDAY) 6 else dayOfWeek - Calendar.MONDAY
+        cal.add(Calendar.DAY_OF_MONTH, -daysToMonday)
+        cal.add(Calendar.DAY_OF_MONTH, daysAgo.coerceAtMost(6))
         return JournalEntry(
             content = content,
             wordCount = content.split(" ").size,

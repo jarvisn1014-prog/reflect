@@ -97,7 +97,7 @@ If the data is too sparse for a meaningful insight, respond with: "Not enough en
 """.trimIndent()
 
     fun buildDigestPrompt(statsJson: String): String {
-        return "$DIGEST_INSTRUCTION\n\nWeekly data:\n$jsonJson".replace("jsonJson", statsJson)
+        return "$DIGEST_INSTRUCTION\n\nWeekly data:\n$statsJson"
     }
 
     const val MODEL = "gemini-2.0-flash"

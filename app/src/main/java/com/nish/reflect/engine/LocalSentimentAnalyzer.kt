@@ -74,7 +74,7 @@ object LocalSentimentAnalyzer {
         // Negative — medium energy
         "bored" to (-0.3f to 0.2f), "apathetic" to (-0.4f to 0.1f), "indifferent" to (-0.2f to 0.2f),
         "unmotivated" to (-0.4f to 0.2f), "procrastinating" to (-0.3f to 0.3f), "distracted" to (-0.2f to 0.5f),
-        "scattered" to (-0.3f to 0.5f), "scattered" to (-0.3f to 0.5f),
+        "scattered" to (-0.3f to 0.5f),
 
         // Neutral-ish / context-dependent
         "busy" to (0.0f to 0.7f), "challenging" to (-0.1f to 0.6f), "difficult" to (-0.3f to 0.5f),

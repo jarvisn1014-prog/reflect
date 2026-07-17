@@ -48,7 +48,8 @@ import com.nish.reflect.ui.theme.JournalBodyStyle
 fun TodayScreen(
     viewModel: ReflectViewModel,
     onOpenList: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    contentPadding: androidx.compose.foundation.layout.PaddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
 ) {
     val isAnalyzing by viewModel.isAnalyzing.collectAsState()
     val aiEnabled by viewModel.aiEnabled.collectAsState()
@@ -97,6 +98,7 @@ fun TodayScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .padding(contentPadding)
                 .padding(horizontal = 16.dp)
                 .imePadding()
                 .verticalScroll(rememberScrollState())
@@ -148,7 +150,7 @@ fun TodayScreen(
                         )
                     },
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .height(300.dp),
                     textStyle = JournalBodyStyle.copy(
                         color = MaterialTheme.colorScheme.onSurface

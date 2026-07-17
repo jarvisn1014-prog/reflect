@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,9 +31,11 @@ import com.nish.reflect.ui.components.ThemePill
 import com.nish.reflect.ui.components.WeeklyMoodChart
 import com.nish.reflect.ui.theme.DigestHeadlineStyle
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InsightsScreen(
-    viewModel: ReflectViewModel
+    viewModel: ReflectViewModel,
+    contentPadding: androidx.compose.foundation.layout.PaddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
 ) {
     val stats by viewModel.weeklyStats.collectAsState()
     val headline by viewModel.digestHeadline.collectAsState()
@@ -39,11 +43,16 @@ fun InsightsScreen(
     val error by viewModel.error.collectAsState()
     val entries by viewModel.entries.collectAsState()
 
-    Scaffold { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Insights") })
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .padding(contentPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
         ) {
