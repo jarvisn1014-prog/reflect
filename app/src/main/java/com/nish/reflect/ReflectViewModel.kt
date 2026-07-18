@@ -8,7 +8,7 @@ import com.nish.reflect.data.model.JournalEntry
 import com.nish.reflect.data.model.MoodLog
 import com.nish.reflect.data.remote.ReflectAIService
 import com.nish.reflect.engine.MoodAggregator
-import com.nish.reflect.engine.MoodAggregator.WeeklyStats
+import com.nish.reflect.engine.WeeklyStats
 import com.nish.reflect.engine.LocalSentimentAnalyzer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -60,7 +60,7 @@ interface GeminiApi {
 
 object ReflectPrompt {
     // Combined: structured extraction + few-shot reflection prompt
-    private const val SYSTEM_INSTRUCTION = """
+    private val SYSTEM_INSTRUCTION = """
 You are a reflective journaling assistant. Analyze the journal entry and return ONLY a JSON object with these fields:
 - "emotion": primary emotion (one of: joyful, calm, content, neutral, anxious, sad, angry, frustrated, excited, grateful, lonely, overwhelmed, hopeful, tired)
 - "valence": float from -1.0 (very negative) to 1.0 (very positive)
@@ -85,7 +85,7 @@ Now analyze this entry:
     }
 
     // Weekly digest prompt — takes aggregated stats JSON
-    private const val DIGEST_INSTRUCTION = """
+    private val DIGEST_INSTRUCTION = """
 You are a mood pattern analyst. You receive a week's worth of structured mood and journal data as JSON.
 Identify patterns, correlations, and trends. Write a 2-4 sentence insight that is:
 - Specific (cite days or themes when possible)

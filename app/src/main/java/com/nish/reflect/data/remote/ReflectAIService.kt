@@ -15,7 +15,7 @@ class ReflectAIService {
         .baseUrl(ReflectPrompt.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(GeminiApi::class)
+        .create(GeminiApi::class.java)
 
     private val gson = Gson()
 
