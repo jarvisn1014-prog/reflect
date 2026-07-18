@@ -165,21 +165,19 @@ fun WeeklyMoodChart(
                         center = Offset(x + barWidthPx / 2, y - 6f)
                     )
                 }
-
-                // Day label
-                drawIntoCanvas { canvas ->
-                    val paint = android.graphics.Paint().apply {
-                        color = android.graphics.Color.LTGRAY
-                        textSize = 28f
-                        textAlign = android.graphics.Paint.Align.CENTER
-                    }
-                    canvas.nativeCanvas.drawText(
-                        dayLabels[index],
-                        x + barWidthPx / 2,
-                        size.height,
-                        paint
-                    )
-                }
+            }
+        }
+        // Day labels row below chart
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            dayLabels.forEach { label ->
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

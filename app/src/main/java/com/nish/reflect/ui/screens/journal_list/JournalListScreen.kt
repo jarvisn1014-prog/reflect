@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun JournalListScreen(
     viewModel: ReflectViewModel,
@@ -112,6 +113,7 @@ fun JournalListScreen(
     }
 }
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 private fun JournalEntryCard(
     entry: JournalEntry,
